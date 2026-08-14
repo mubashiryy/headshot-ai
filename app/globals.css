@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #08080f;
+  --bg-card: #111118;
+  --accent: #6c63ff;
+  --accent-2: #a855f7;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg);
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, #1a1a2e 25%, #252540 50%, #1a1a2e 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes progress-bar {
+  0% { width: 0%; }
+}
+
+.upload-zone {
+  background: radial-gradient(ellipse at center, rgba(108,99,255,0.08) 0%, transparent 70%);
+  border: 2px dashed rgba(108,99,255,0.4);
+  transition: all 0.3s ease;
+}
+
+.upload-zone:hover,
+.upload-zone.drag-over {
+  border-color: rgba(108,99,255,0.9);
+  background: radial-gradient(ellipse at center, rgba(108,99,255,0.15) 0%, transparent 70%);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #6c63ff 0%, #a855f7 50%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glass-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #6c63ff 0%, #a855f7 100%);
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.btn-primary:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

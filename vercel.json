@@ -1,0 +1,19 @@
+{
+  "functions": {
+    "app/api/generate/route.ts": {
+      "maxDuration": 15
+    },
+    "app/api/status/[id]/route.ts": {
+      "maxDuration": 15
+    },
+    "app/api/watermark/route.ts": {
+      "maxDuration": 30
+    },
+    "app/api/download/route.ts": {
+      "maxDuration": 30
+    },
+    "app/api/success-details/route.ts": {
+      "maxDuration": 15
+    }
+  }
+}
