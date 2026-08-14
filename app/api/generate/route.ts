@@ -59,22 +59,24 @@ export async function POST(request: NextRequest) {
 
     const prompts = STYLE_PROMPTS[style] || STYLE_PROMPTS.corporate;
 
-    // Create 2 FLUX Kontext predictions in parallel (different style prompts)
-    const [pred1, pred2] = await Promise.all(
-      prompts.map((prompt) =>
-        replicate.predictions.create({
-          model: 'black-forest-labs/flux-kontext-pro',
-          input: {
-            input_image: dataUri,
-            prompt,
-            aspect_ratio: '1:1',
-            output_format: 'jpg',
-            safety_tolerance: 2,
-            prompt_upsampling: false,
-          },
-        })
-      )
-    );
+    // Create predictions sequentially to avoid burst rate limits on Replicate
+    const createPrediction = (prompt: string) =>
+      replicate.predictions.create({
+        model: 'black-forest-labs/flux-kontext-pro',
+        input: {
+          input_image: dataUri,
+          prompt,
+          aspect_ratio: '1:1',
+          output_format: 'jpg',
+          safety_tolerance: 2,
+          prompt_upsampling: false,
+        },
+      });
+
+    const pred1 = await createPrediction(prompts[0]);
+    // Small delay between requests to respect Replicate's burst limit
+    await new Promise((r) => setTimeout(r, 500));
+    const pred2 = await createPrediction(prompts[1]);
 
     return NextResponse.json({ predictionIds: [pred1.id, pred2.id] });
   } catch (err: unknown) {
