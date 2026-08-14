@@ -63,9 +63,9 @@ export async function POST(request: NextRequest) {
         prompt: `img, ${prompt}`,
         style_name: 'Photographic (Default)',
         num_outputs: 2,
-        guidance_scale: 5,
-        num_inference_steps: 50,
-        style_strength_ratio: 20,
+        guidance_scale: 7,
+        num_inference_steps: 30,
+        style_strength_ratio: 15,
         negative_prompt:
           'nsfw, nude, lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, cartoon, anime, illustration, painting',
       },
