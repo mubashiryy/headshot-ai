@@ -7,7 +7,7 @@ type Stage = 'upload' | 'generating' | 'results' | 'error';
 type StyleKey = 'corporate' | 'linkedin' | 'executive' | 'casual';
 
 interface Result {
-  predictionId: string;
+  predictionId: string;h
   imageUrls: string[];
 }
 
@@ -144,7 +144,7 @@ function GeneratingView({ progress }: { progress: number }) {
 
       <div className="glass-card rounded-xl px-6 py-4 text-center max-w-sm">
         <p className="text-gray-300 text-sm">
-          ⚡ AI is generating 4 professional headshots for you.<br />
+          ⚡ AI is generating 2 professional headshots for you.<br />
           <span className="text-gray-500">This usually takes 30–90 seconds.</span>
         </p>
       </div>
@@ -206,11 +206,11 @@ function ResultGrid({
               <span className="text-gray-400 text-sm">once</span>
             </div>
             <p className="text-gray-400 text-sm mt-2">
-              Download all 4 HD headshots from this session, no watermark.
+              Download all 2 HD headshots from this session, no watermark.
             </p>
           </div>
           <ul className="space-y-1.5 text-sm text-gray-300 flex-1">
-            {['4 HD headshots (this session)', 'No watermark', 'Instant download', 'Commercial use'].map(f => (
+            {['2 HD headshots (this session)', 'No watermark', 'Instant download', 'Commercial use'].map(f => (
               <li key={f} className="flex items-center gap-2">
                 <span className="text-purple-400">✓</span> {f}
               </li>
@@ -436,7 +436,7 @@ export default function Home() {
                 <span className="gradient-text">in minutes</span>
               </h1>
               <p className="text-gray-400 text-lg max-w-md mx-auto">
-                Upload one selfie. Get 4 studio-quality headshots you&rsquo;d pay hundreds for.
+                Upload one selfie. Get 2 studio-quality headshots you&rsquo;d pay hundreds for.
               </p>
             </div>
 
@@ -524,7 +524,7 @@ export default function Home() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[
               { step: '01', title: 'Upload a selfie', desc: 'Any recent photo with your face clearly visible. Phone camera quality works great.' },
-              { step: '02', title: 'AI generates 4 headshots', desc: 'Our AI analyzes your features and renders professional studio-quality portraits in ~60 seconds.' },
+              { step: '02', title: 'AI generates 2 headshots', desc: 'Our AI analyzes your features and renders professional studio-quality portraits in ~60 seconds.' },
               { step: '03', title: 'Download HD', desc: 'Pay once to download all 4 in full HD, no watermark. Ready for LinkedIn, CVs, and more.' },
             ].map((item) => (
               <div key={item.step} className="glass-card rounded-2xl p-6">
@@ -547,7 +547,7 @@ export default function Home() {
               <div className="text-2xl font-bold text-white">Free</div>
               <p className="text-gray-400 text-sm mt-1">Always free</p>
               <ul className="mt-4 space-y-2 text-sm text-gray-300">
-                {['4 watermarked previews', 'All styles', 'No account needed'].map(f => (
+                {['2 watermarked previews', 'All styles', 'No account needed'].map(f => (
                   <li key={f} className="flex gap-2"><span className="text-gray-500">✓</span>{f}</li>
                 ))}
               </ul>
@@ -556,7 +556,7 @@ export default function Home() {
               <div className="text-2xl font-bold gradient-text">$19 / $12 mo</div>
               <p className="text-gray-400 text-sm mt-1">One-time or monthly</p>
               <ul className="mt-4 space-y-2 text-sm text-gray-300">
-                {['4 HD headshots, no watermark', 'Unlimited monthly sessions', 'Commercial use', '30-day refund'].map(f => (
+                {['2 HD headshots, no watermark', 'Unlimited monthly sessions', 'Commercial use', '30-day refund'].map(f => (
                   <li key={f} className="flex gap-2"><span className="text-purple-400">✓</span>{f}</li>
                 ))}
               </ul>
