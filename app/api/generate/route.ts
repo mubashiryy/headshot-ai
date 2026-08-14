@@ -8,12 +8,25 @@ const replicate = new Replicate({
 // Max file size: 10MB
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
-const HEADSHOT_PROMPTS = [
-  'RAW photo, professional corporate headshot, business formal suit, neutral gray background, sharp focus, photorealistic, DSLR 85mm portrait, natural studio lighting, skin texture visible',
-  'RAW photo, professional LinkedIn profile photo, business casual attire, clean blue-gray background, natural relaxed expression, photorealistic, DSLR portrait, no filter',
-  'RAW photo, executive portrait, formal dark suit, modern office environment, photorealistic, natural window light, 85mm lens, candid professional look',
-  'RAW photo, professional headshot, smart casual attire, warm white background, genuine approachable expression, photorealistic, DSLR, no post-processing',
-];
+// Two different professional style prompts for variety
+const STYLE_PROMPTS: Record<string, string[]> = {
+  corporate: [
+    'Professional corporate headshot of this exact person wearing a dark charcoal business suit, white dress shirt, and silk tie. Neutral grey studio background. Soft front studio lighting. Sharp focus. DSLR photography, 85mm lens. Photorealistic.',
+    'Professional executive headshot of this exact person in a navy blue suit and tie. Light grey background. Rembrandt studio lighting. Sharp facial detail. Photorealistic DSLR portrait.',
+  ],
+  linkedin: [
+    'Professional LinkedIn headshot of this exact person in smart business casual attire. Clean off-white background. Natural soft lighting. Warm approachable expression. Photorealistic DSLR portrait, 85mm lens.',
+    'Professional profile photo of this exact person wearing a blazer. Light neutral background. Natural window lighting. Relaxed confident look. Photorealistic DSLR photography.',
+  ],
+  executive: [
+    'Executive portrait of this exact person in a premium dark suit. Modern office background, shallow depth of field. Dramatic directional studio lighting. Sharp focus. Photorealistic DSLR, 85mm.',
+    'Senior executive headshot of this exact person in a formal suit. Blurred corporate office background. Professional studio lighting. Authoritative confident expression. Photorealistic photography.',
+  ],
+  casual: [
+    'Professional smart-casual headshot of this exact person in a neat blazer over an open-collar shirt. Warm cream background. Natural soft lighting. Friendly approachable expression. Photorealistic DSLR portrait.',
+    'Professional casual headshot of this exact person in business casual clothing. Soft gradient background. Natural lighting. Genuine relaxed smile. Photorealistic photography, 85mm lens.',
+  ],
+};
 
 export async function POST(request: NextRequest) {
   try {
@@ -44,33 +57,26 @@ export async function POST(request: NextRequest) {
     const base64 = buffer.toString('base64');
     const dataUri = `data:${file.type};base64,${base64}`;
 
-    const stylePrompts: Record<string, string> = {
-      corporate: HEADSHOT_PROMPTS[0],
-      linkedin: HEADSHOT_PROMPTS[1],
-      executive: HEADSHOT_PROMPTS[2],
-      casual: HEADSHOT_PROMPTS[3],
-    };
+    const prompts = STYLE_PROMPTS[style] || STYLE_PROMPTS.corporate;
 
-    const prompt = stylePrompts[style] || stylePrompts.corporate;
+    // Create 2 FLUX Kontext predictions in parallel (different style prompts)
+    const [pred1, pred2] = await Promise.all(
+      prompts.map((prompt) =>
+        replicate.predictions.create({
+          model: 'black-forest-labs/flux-kontext-pro',
+          input: {
+            input_image: dataUri,
+            prompt,
+            aspect_ratio: '1:1',
+            output_format: 'jpg',
+            safety_tolerance: 2,
+            prompt_upsampling: false,
+          },
+        })
+      )
+    );
 
-    // Start async prediction — returns immediately with an ID
-    const prediction = await replicate.predictions.create({
-      version:
-        process.env.PHOTOMAKER_VERSION ||
-        'ddfc2b08d209f9fa8c1eca692712918bd449f695dabb4a958da31802a9570fe4',
-      input: {
-        input_image: dataUri,
-        prompt: `img, ${prompt}`,
-        style_name: 'Photographic (Default)',
-        num_outputs: 2,
-        guidance_scale: 7,
-        num_inference_steps: 30,
-        style_strength_ratio: 15,
-        negative_prompt:
-        'nsfw, nude, lowres, bad anatomy, text, watermark, blurry, cartoon, anime, illustration, painting, makeup, lipstick, eyeshadow, beauty filter, airbrushed, plastic skin, overprocessed, artificial, fake, out of focus',      },
-    });
-
-    return NextResponse.json({ predictionId: prediction.id });
+    return NextResponse.json({ predictionIds: [pred1.id, pred2.id] });
   } catch (err: unknown) {
     console.error('[generate] Error:', err);
     const message = err instanceof Error ? err.message : 'Generation failed';
