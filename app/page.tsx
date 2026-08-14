@@ -7,7 +7,7 @@ type Stage = 'upload' | 'generating' | 'results' | 'error';
 type StyleKey = 'corporate' | 'linkedin' | 'executive' | 'casual';
 
 interface Result {
-  predictionId: string;h
+  predictionId: string;
   imageUrls: string[];
 }
 
