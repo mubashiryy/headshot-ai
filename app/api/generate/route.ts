@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
         input_image: dataUri,
         prompt: `img, ${prompt}`,
         style_name: 'Photographic (Default)',
-        num_outputs: 4,
+        num_outputs: 2,
         guidance_scale: 5,
         num_inference_steps: 50,
         style_strength_ratio: 20,
