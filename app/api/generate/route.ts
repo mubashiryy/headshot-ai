@@ -67,8 +67,7 @@ export async function POST(request: NextRequest) {
         num_inference_steps: 30,
         style_strength_ratio: 15,
         negative_prompt:
-          'nsfw, nude, lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, cartoon, anime, illustration, painting',
-      },
+        'nsfw, nude, lowres, bad anatomy, text, watermark, blurry, cartoon, anime, illustration, painting, makeup, lipstick, eyeshadow, beauty filter, airbrushed, plastic skin, overprocessed, artificial, fake, out of focus',      },
     });
 
     return NextResponse.json({ predictionId: prediction.id });
