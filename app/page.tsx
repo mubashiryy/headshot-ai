@@ -202,7 +202,7 @@ function ResultGrid({
           <div>
             <div className="text-xs font-semibold text-purple-400 uppercase tracking-wider mb-1">One-time</div>
             <div className="flex items-baseline gap-1">
-              <span className="text-4xl font-bold text-white">$19</span>
+              <span className="text-4xl font-bold text-white">$10</span>
               <span className="text-gray-400 text-sm">once</span>
             </div>
             <p className="text-gray-400 text-sm mt-2">
@@ -221,7 +221,7 @@ function ResultGrid({
             disabled={loadingCheckout !== null}
             className="btn-primary w-full py-3 rounded-xl font-semibold text-white"
           >
-            {loadingCheckout === 'one_time' ? 'Redirecting…' : 'Download HD for $19'}
+            {loadingCheckout === 'one_time' ? 'Redirecting…' : 'Download HD for $10'}
           </button>
         </div>
 
@@ -234,7 +234,7 @@ function ResultGrid({
           <div>
             <div className="text-xs font-semibold text-purple-300 uppercase tracking-wider mb-1">Monthly</div>
             <div className="flex items-baseline gap-1">
-              <span className="text-4xl font-bold text-white">$12</span>
+              <span className="text-4xl font-bold text-white">$7</span>
               <span className="text-gray-400 text-sm">/month</span>
             </div>
             <p className="text-gray-400 text-sm mt-2">
@@ -253,7 +253,7 @@ function ResultGrid({
             disabled={loadingCheckout !== null}
             className="btn-primary w-full py-3 rounded-xl font-semibold text-white"
           >
-            {loadingCheckout === 'subscription' ? 'Redirecting…' : 'Subscribe for $12/mo'}
+            {loadingCheckout === 'subscription' ? 'Redirecting…' : 'Subscribe for $7/mo'}
           </button>
         </div>
       </div>
@@ -553,7 +553,7 @@ export default function Home() {
               </ul>
             </div>
             <div className="glass-card rounded-2xl p-6" style={{ borderColor: 'rgba(108,99,255,0.4)' }}>
-              <div className="text-2xl font-bold gradient-text">$19 / $12 mo</div>
+              <div className="text-2xl font-bold gradient-text">$10 / $7/mo</div>
               <p className="text-gray-400 text-sm mt-1">One-time or monthly</p>
               <ul className="mt-4 space-y-2 text-sm text-gray-300">
                 {['2 HD headshots, no watermark', 'Unlimited monthly sessions', 'Commercial use', '30-day refund'].map(f => (
