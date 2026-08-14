@@ -9,10 +9,10 @@ const replicate = new Replicate({
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
 const HEADSHOT_PROMPTS = [
-  'professional corporate headshot of a person, business formal attire, neutral gray background, sharp focus, photorealistic, studio lighting, 8k',
-  'professional LinkedIn profile photo, business casual attire, soft blue background, confident smile, photorealistic, high quality',
-  'executive portrait, formal suit, office environment bokeh background, photorealistic, professional lighting',
-  'professional headshot, smart casual attire, warm white background, approachable expression, photorealistic, crisp details',
+  'RAW photo, professional corporate headshot, business formal suit, neutral gray background, sharp focus, photorealistic, DSLR 85mm portrait, natural studio lighting, skin texture visible',
+  'RAW photo, professional LinkedIn profile photo, business casual attire, clean blue-gray background, natural relaxed expression, photorealistic, DSLR portrait, no filter',
+  'RAW photo, executive portrait, formal dark suit, modern office environment, photorealistic, natural window light, 85mm lens, candid professional look',
+  'RAW photo, professional headshot, smart casual attire, warm white background, genuine approachable expression, photorealistic, DSLR, no post-processing',
 ];
 
 export async function POST(request: NextRequest) {
