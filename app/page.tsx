@@ -315,24 +315,25 @@ export default function Home() {
         throw new Error(msg || 'Generation start failed');
       }
 
-      const { predictionId } = await genRes.json();
+      const { predictionIds } = await genRes.json();
+      const pollId = Array.isArray(predictionIds) ? predictionIds.join(',') : predictionIds;
       setProgress(12);
 
       // Slowly advance the displayed progress (55 → 90%) while the model runs,
-      // so the bar never appears frozen. +1% every 5 s ≈ 2.9 min to reach 90%.
+      // so the bar never appears frozen. +1% every 3 s ≈ 2 min to reach 90%.
       let displayPct = 55;
       slowTimerRef.current = setInterval(() => {
         displayPct = Math.min(displayPct + 1, 90);
         setProgress(displayPct);
-      }, 5000);
+      }, 3000);
 
-      // Timeout after 5 minutes
+      // Timeout after 8 minutes
       let elapsed = 0;
-      const MAX_WAIT_MS = 5 * 60 * 1000;
+      const MAX_WAIT_MS = 8 * 60 * 1000;
 
       // Poll for completion
       pollRef.current = setInterval(async () => {
-        elapsed += 3500;
+        elapsed += 3000;
         if (elapsed >= MAX_WAIT_MS) {
           clearInterval(pollRef.current!);
           clearInterval(slowTimerRef.current!);
@@ -342,7 +343,7 @@ export default function Home() {
         }
 
         try {
-          const statusRes = await fetch(`/api/status/${predictionId}`);
+          const statusRes = await fetch(`/api/status/${pollId}`);
           const data = await statusRes.json();
 
           // Only drive progress from the API for non-processing states
@@ -352,8 +353,9 @@ export default function Home() {
             clearInterval(pollRef.current!);
             clearInterval(slowTimerRef.current!);
             setProgress(100);
+            const firstId = Array.isArray(predictionIds) ? predictionIds[0] : predictionIds;
             setTimeout(() => {
-              setResult({ predictionId, imageUrls: data.output });
+              setResult({ predictionId: firstId, imageUrls: data.output });
               setStage('results');
             }, 500);
           } else if (data.status === 'failed' || data.status === 'canceled') {
@@ -367,7 +369,7 @@ export default function Home() {
           setError(pollErr instanceof Error ? pollErr.message : 'Polling error');
           setStage('error');
         }
-      }, 3500);
+      }, 3000);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
       setStage('error');
@@ -428,7 +430,7 @@ export default function Home() {
             <div className="text-center space-y-3">
               <div className="inline-flex items-center gap-2 glass-card rounded-full px-4 py-1.5 text-sm text-purple-300 mb-2">
                 <span>⚡</span>
-                <span>Powered by PhotoMaker AI</span>
+                <span>Powered by FLUX Kontext AI</span>
               </div>
               <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight leading-tight">
                 Professional headshots
@@ -525,7 +527,7 @@ export default function Home() {
             {[
               { step: '01', title: 'Upload a selfie', desc: 'Any recent photo with your face clearly visible. Phone camera quality works great.' },
               { step: '02', title: 'AI generates 2 headshots', desc: 'Our AI analyzes your features and renders professional studio-quality portraits in ~60 seconds.' },
-              { step: '03', title: 'Download HD', desc: 'Pay once to download all 4 in full HD, no watermark. Ready for LinkedIn, CVs, and more.' },
+              { step: '03', title: 'Download HD', desc: 'Pay once to download all 2 in full HD, no watermark. Ready for LinkedIn, CVs, and more.' },
             ].map((item) => (
               <div key={item.step} className="glass-card rounded-2xl p-6">
                 <div className="text-3xl font-black gradient-text mb-3">{item.step}</div>
@@ -553,7 +555,7 @@ export default function Home() {
               </ul>
             </div>
             <div className="glass-card rounded-2xl p-6" style={{ borderColor: 'rgba(108,99,255,0.4)' }}>
-              <div className="text-2xl font-bold gradient-text">$10 / $7/mo</div>
+              <div className="text-2xl font-bold gradient-text">$10 / $7 mo</div>
               <p className="text-gray-400 text-sm mt-1">One-time or monthly</p>
               <ul className="mt-4 space-y-2 text-sm text-gray-300">
                 {['2 HD headshots, no watermark', 'Unlimited monthly sessions', 'Commercial use', '30-day refund'].map(f => (
@@ -567,7 +569,7 @@ export default function Home() {
 
       {/* ── Footer ──────────────────────────────────────────────────────────── */}
       <footer className="py-8 px-4 border-t border-white/5 text-center text-xs text-gray-600 space-y-1">
-        <p>© {new Date().getFullYear()} HeadshotAI · Powered by PhotoMaker AI + Stripe</p>
+        <p>© {new Date().getFullYear()} HeadshotAI · Powered by FLUX Kontext AI + Stripe</p>
         <p>Images processed securely · Deleted from servers after 24 hours</p>
       </footer>
     </div>
